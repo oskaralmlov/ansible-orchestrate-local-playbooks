@@ -1,0 +1,8 @@
+[example_servers]
+host1.example
+
+[example_servers:vars]
+example_variable=true
+
+[jumphosts]
+jumphost.example.com

@@ -1,0 +1,23 @@
+- hosts: example_servers
+  connection: local
+  tasks:
+    
+    - name: Prove this works
+      ansible.builtin.debug:
+        msg: It works!!
+
+    - name: Print IPv4 address
+      ansible.builtin.debug:
+        var: ansible_default_ipv4.address
+
+    - name: Print local hostname
+      ansible.builtin.debug:
+        var: ansible_hostname
+
+    - name: Print server groups
+      ansible.builtin.debug:
+        var: group_names
+
+    - name: Print all groups
+      ansible.builtin.debug:
+        var: groups

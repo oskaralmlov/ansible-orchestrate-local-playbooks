@@ -1,0 +1,29 @@
+- name: Provision jumphosts
+  hosts: jumphosts
+  gather_facts: false
+  become: true
+
+  tasks:
+
+    - name: Install {{ _packages | join(",") }}
+      ansible.builtin.apt:
+        name: "{{ _packages }}"
+      vars:
+        _packages:
+          - nmap  # To get ncat
+
+
+- name: Provision example servers
+  hosts: example_servers
+  gather_facts: false
+  become: true
+
+  tasks:
+
+    - name: Install {{ _packages | join(",") }}
+      ansible.builtin.apt:
+        name: "{{ _packages }}"
+      vars:
+        _packages:
+          - nmap  # To get ncat
+          - ansible

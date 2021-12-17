@@ -1,0 +1,30 @@
+- name: Run a local playbook
+  hosts: example_servers
+  gather_facts: false
+
+  vars:
+    hostvars_path: /tmp/hostvars
+    playbook_path: /tmp/playbook.yml
+    inventory_path: /tmp/inventory
+
+  tasks:
+    
+    - name: Create {{ hostvars_path }}
+      ansible.builtin.copy:
+        content: "{{ hostvars[inventory_hostname] }}"
+        dest: "{{ hostvars_path }}"
+
+    - name: Create {{ playbook_path }}
+      ansible.builtin.copy:
+        src: "{{ playbook_filename }}"
+        dest: "{{ playbook_path }}"
+
+    - name: Create {{ inventory_path }}
+      ansible.builtin.copy:
+        src: inventory
+        dest: "{{ inventory_path }}"
+   
+    - name: Run {{ playbook_path }} on {{ inventory_hostname }}
+      ansible.builtin.shell: ANSIBLE_FORCE_COLOR=True ansible-playbook {{ playbook_path }} -e @{{ hostvars_path }} -i {{ inventory_path }} --limit {{ inventory_hostname }} 2>&1 | ncat -4 --ssl {{ report_host }} 10000
+      changed_when: false
+
